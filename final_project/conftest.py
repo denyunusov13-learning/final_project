@@ -22,7 +22,7 @@ def driver():
     email_field.send_keys(os.getenv("YOUGILE_LOGIN"))
 
     password_field = wait.until(EC.presence_of_element_located(
-        (By.CSS_SELECTOR, By.XPATH, "//input[@placeholder='Введите пароль']")))
+        (By.XPATH, "//input[@placeholder='Введите пароль']")))
     password_field.clear()
     password_field.send_keys(os.getenv("YOUGILE_PASSWORD"))
 
