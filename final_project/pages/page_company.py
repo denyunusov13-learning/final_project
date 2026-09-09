@@ -63,8 +63,9 @@ class YouGile_Main_Page:
         with allure.step(f"Удалить колонку '{name}'"):
             column_to_delete = self.wait_until(EC.element_to_be_clickable())
 
-    def create_task(self, name: str, column_name: str) -> None:
-        with allure.step(f"Создать задачу '{name}'")
-            
-    def delete_task(self, name: str) -> None:
-        with allure.step(f"Удалить задачу '{name}'"):
+    # def create_task(self, name: str, column_name: str) -> None:
+    #     with allure.step(f"Создать задачу '{name}'"):
+    #     pass
+
+    # def delete_task(self, name: str) -> None:
+    #     with allure.step(f"Удалить задачу '{name}'"):
