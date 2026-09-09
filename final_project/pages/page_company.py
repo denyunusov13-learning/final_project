@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import allure
-
+from selenium.webdriver.common.keys import Keys
 
 class YouGile_Main_Page:
     """Page Object главной страницы YouGile /team/."""
@@ -18,7 +18,7 @@ class YouGile_Main_Page:
 
     # локаторы взаимодействия с колонками
     NEW_COLUMN = (By.XPATH, "//div[@role='button' and contains(., 'Создать колонку')]")
-    COLUMN_NAME_FIELD = None
+    COLUMN_NAME_FIELD = (By.XPATH, "//textarea[@placeholder='Введите имя колонки…']")
     COLUMN_ICON_BTN = None
     DELETE_COLUMN_BTN = (By.XPATH, "//div[@data-testid='menu-item-delete'")
     CONFIRM_DELETE_COLUMN = (By.XPATH, "//div[@role='button' and contains(., 'Удалить')]")
@@ -29,6 +29,7 @@ class YouGile_Main_Page:
 
     # общие локаторы
     MY_COMPANY_BTN = (By.XPATH, "//div[@data-testid='my-company-item'")
+    FIRST_TEST_PROJECT = (By.XPATH, "//div[@data-testid='project-item'][2]")
 
     def __init__(self, driver):
         self.driver = driver
@@ -53,17 +54,34 @@ class YouGile_Main_Page:
 
     def delete_project(self, name: str) -> None:
         with allure.step(f"Удалить проект '{name}'"):
-            project_to_delete = self.wait_until(EC.element_to_be_clickable())
+            project_to_delete = self.wait.until(EC.element_to_be_clickable())
 
     def create_column(self, name: str) -> None:
         with allure.step(f"Создать колонку '{name}'"):
-            self._click(NEW_COLUMN)
+            self._click(self.NEW_COLUMN)
+            textarea_field = self.wait.until(EC.element_to_be_clickable(self.COLUMN_NAME_FIELD))
+            textarea_field.clear()
+            textarea_field.send_keys(name)
+            textarea_field.send_keys(Keys.RETURN)
+
+    def is_colums_exist(self, name):
+        return self.wait.until(EC.visibility_of_element_located((By.XPATH, f"//span[text()='{name}']")))
 
     def delete_column(self, name: str) -> None:
         with allure.step(f"Удалить колонку '{name}'"):
             column_to_delete = self.wait_until(EC.element_to_be_clickable())
 
-    # def create_task(self, name: str, column_name: str) -> None:
+    def click_firs_project(self):
+        self._click(self.FIRST_TEST_PROJECT)
+
+    def click_column(self):
+        
+        self.driver.execute_cdp_cmd('Debugger.enable', {})
+        self.driver.execute_cdp_cmd('Debugger.pause', {})
+        pass
+
+
+    # def create_task(se)lf, name: str, column_name: str) -> None:
     #     with allure.step(f"Создать задачу '{name}'"):
     #     pass
 

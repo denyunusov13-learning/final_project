@@ -23,7 +23,7 @@ def driver():
         )
     )
     email_field.clear()
-    email_field.send_keys(os.getenv("YOUGILE_LOGIN"))
+    email_field.send_keys(os.getenv("YOUGILE_EMAIL"))
 
     password_field = wait.until(
         EC.presence_of_element_located(
@@ -31,7 +31,7 @@ def driver():
         )
     )
     password_field.clear()
-    password_field.send_keys(os.getenv("YOUGILE_PASSWORD"))
+    password_field.send_keys(os.getenv("YOUGILE_PASS"))
 
     login_btn = wait.until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "[role='button']"))
