@@ -26,14 +26,13 @@ class YouGile_Main_Page:
     CONFIRM_DELETE_COLUMN = (By.XPATH, "//div[@role='button' and contains(., 'Удалить')]")
 
     # локаторы взаимодействия с задачами
-    NEW_TASK = (By.XPATH, "//div[@data-testid='link-button-new']")
-    TASK_NAME_FIELD = (By.XPATH, "//div[@data-testid='board-task-input-name']")
+    NEW_TASK = (By.XPATH, "//div[@data-testid='link-button-new' and contains(., 'Добавить задачу')]")
+    TASK_NAME_FIELD = (By.XPATH, "//textarea[contains(@placeholder, 'название задачи')]")
 
     # прочие локаторы
     MY_COMPANY_BTN = (By.XPATH, "//div[@data-testid='my-company-item']")
     FIRST_TEST_PROJECT = (By.XPATH, "//div[@data-testid='project-item'][2]")
     EXAMPLE_PROJECT = (By.XPATH, "//div[@data-itemid='18f57770-ccd3-4010-a7bc-224a0170ee1a']")
-
 
     def __init__(self, driver):
         self.driver = driver
@@ -107,11 +106,11 @@ class YouGile_Main_Page:
         'name_column' проекта 'name_project'"""
         with allure.step(f"Создать задачу '{name_task}' в колонке '{name_column}' проект {name_project}"):
             column_locator = (By.XPATH, f"//span[text()='{name_column}']")
-            column_elem = self.wait.until(EC.element_to_be_clickable(column_locator))
-            column_elem.click(self.NEW_TASK)
-            task_field = self.wait.until(
-                            EC.element_to_be_clickable(self.TASK_NAME_FIELD))
+            self.wait.until(EC.visibility_of_element_located(column_locator))
+            self._click(self.NEW_TASK)
             self._input(self.TASK_NAME_FIELD, name_task)
+            task_field = self.wait.until(
+                                        EC.element_to_be_clickable(self.TASK_NAME_FIELD))
             task_field.send_keys(Keys.RETURN)
 
     def is_task_exist(self, name_task: str):
