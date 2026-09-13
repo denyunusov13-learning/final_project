@@ -1,0 +1,6 @@
+pytest
+requests
+allure-pytest
+faker
+selenium
+python-dotenv
